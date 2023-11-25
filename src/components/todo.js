@@ -16,7 +16,7 @@ function Todo() {
   };
 
   const addtodo = () => {
-    settodos([...todos, todo]);
+    settodos([...todos, {list:todo, id:Date.now(), status:false}]);
     console.log("data", todos);
     settodo('')
   };
@@ -26,6 +26,20 @@ function Todo() {
     console.log(inputref.current)
     inputref.current.focus()
   })
+
+  const onDelete = (id) =>{
+      settodos(todos.filter((input) =>input.id !== id))
+  }
+
+  const oncomplete = (id) =>{
+    let  complete= todos.map((list)=>{
+        if(list.id === id){
+          return({ ...list, status: !list.status })
+        }
+        return list
+    })
+    settodos(complete)
+}
 
   return (
     <div className='container'>
@@ -40,11 +54,11 @@ function Todo() {
           {
              todos.map((input) => (
             <li className="list-items">
-             <div className="list-item-list" >  {input} </div>
+             <div className="list-item-list"  id={ input.status? 'list-item' : '' }>  {input.list} </div>
               <span>
-                 <IoMdDoneAll className="list-item-icons" id='complete' title="complete"/>
+                 <IoMdDoneAll className="list-item-icons" id='complete' title="complete" onClick={()=> oncomplete (input.id)}/>
                  <FiEdit className="list-item-icons" id='edit' title="edit"/>
-                 <MdDeleteOutline className="list-item-icons" id='delete' title="delete"/>
+                 <MdDeleteOutline className="list-item-icons" id='delete' title="delete" onClick={()=> onDelete(input.id)}/>
               </span>
             </li>
             ))
