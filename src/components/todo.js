@@ -2,7 +2,6 @@ import React from "react";
 import "./todo.css";
 import { useState ,useRef,useEffect} from "react";
 import { IoMdDoneAll } from "react-icons/io";
-import { FiEdit } from "react-icons/fi";
 import { MdDeleteOutline } from "react-icons/md";
 
 function Todo() {
@@ -15,11 +14,19 @@ function Todo() {
     e.preventDefault();
   };
 
+  // const addtodo = () => {
+  //   settodos([...todos, {list:todo, id:Date.now(), status:false}]);
+  //   console.log("data", todos);
+  //   settodo('')
+  // };
+
   const addtodo = () => {
-    settodos([...todos, {list:todo, id:Date.now(), status:false}]);
-    console.log("data", todos);
-    settodo('')
+    if (todo.trim() !== "" && !todos.some((item) => item.list === todo)) {
+      settodos([...todos, { list: todo, id: Date.now(), status: false }]);
+      settodo("");
+    }
   };
+  
 
   const inputref = useRef('null')
   useEffect(()=>{
@@ -57,7 +64,6 @@ function Todo() {
              <div className="list-item-list"  id={ input.status? 'list-item' : '' }>  {input.list} </div>
               <span>
                  <IoMdDoneAll className="list-item-icons" id='complete' title="complete" onClick={()=> oncomplete (input.id)}/>
-                 <FiEdit className="list-item-icons" id='edit' title="edit"/>
                  <MdDeleteOutline className="list-item-icons" id='delete' title="delete" onClick={()=> onDelete(input.id)}/>
               </span>
             </li>
